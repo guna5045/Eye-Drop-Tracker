@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Drop History</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>📜 Drop History</h1>
+
+    <div class="history-box">
+      <h3>Date: <span id="historyDate"></span></h3>
+      <p><strong>White Drop:</strong></p>
+      <ul id="whiteHistory"></ul>
+
+      <p><strong>Transparent Drop:</strong></p>
+      <ul id="transparentHistory"></ul>
+    </div>
+
+    <div class="history-link">
+      <a href="index.html">⬅️ Back to Tracker</a>
+    </div>
+  </div>
+
+  <script>
+    const historyDate = document.getElementById("historyDate");
+    const whiteHistory = document.getElementById("whiteHistory");
+    const transparentHistory = document.getElementById("transparentHistory");
+
+    const data = JSON.parse(localStorage.getItem("eyeDropData"));
+
+    if (data) {
+      historyDate.textContent = data.date;
+
+      data.white.forEach(time => {
+        const li = document.createElement("li");
+        li.textContent = time;
+        whiteHistory.appendChild(li);
+      });
+
+      data.transparent.forEach(time => {
+        const li = document.createElement("li");
+        li.textContent = time;
+        transparentHistory.appendChild(li);
+      });
+    } else {
+      historyDate.textContent = "No data found";
+    }
+  </script>
+</body>
+</html>
