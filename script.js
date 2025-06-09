@@ -1,105 +1,73 @@
-// Get elements
-const whiteBtn = document.getElementById("whiteDropBtn");
-const transparentBtn = document.getElementById("transparentDropBtn");
-const whiteCountEl = document.getElementById("whiteCount");
-const transparentCountEl = document.getElementById("transparentCount");
-const nextDropEl = document.getElementById("nextDrop");
-const messageBox = document.getElementById("messageBox");
-const timeDisplay = document.getElementById("currentDateTime");
+// Initial Setup
+const today = new Date().toISOString().split("T")[0];
+const timeElement = document.getElementById("time");
+const whiteCount = document.getElementById("whiteCount");
+const transparentCount = document.getElementById("transparentCount");
+const nextDrop = document.getElementById("nextDrop");
+const whiteBtn = document.getElementById("whiteBtn");
+const transparentBtn = document.getElementById("transparentBtn");
+const lastUsedDisplay = document.getElementById("lastUsed");
 
-// Limits
-const whiteLimit = 5;
-const transparentLimit = 4;
-
-// Load data or start fresh
-let today = new Date().toLocaleDateString();
-let data = JSON.parse(localStorage.getItem("eyeDropData")) || {
+let data = JSON.parse(localStorage.getItem(today)) || {
   date: today,
   white: [],
   transparent: [],
-  lastUsed: null,
+  lastUsed: null
 };
 
-// Reset daily
-if (data.date !== today) {
-  data = {
-    date: today,
-    white: [],
-    transparent: [],
-    lastUsed: null,
-  };
-  localStorage.setItem("eyeDropData", JSON.stringify(data));
-}
+// Show current time
+setInterval(() => {
+  timeElement.textContent = new Date().toLocaleString();
+}, 1000);
 
 // Update UI
 function updateUI() {
-  whiteCountEl.textContent = data.white.length;
-  transparentCountEl.textContent = data.transparent.length;
+  whiteCount.textContent = `White Drop: ${data.white.length} / 5`;
+  transparentCount.textContent = `Transparent Drop: ${data.transparent.length} / 4`;
 
-  if (data.white.length >= whiteLimit && data.transparent.length >= transparentLimit) {
-    nextDropEl.textContent = "✅ All drops done for today!";
-    whiteBtn.disabled = true;
-    transparentBtn.disabled = true;
-    messageBox.textContent = "";
-    return;
+  if (data.lastUsed) {
+    lastUsedDisplay.textContent = `${data.lastUsed} used at ${new Date().toLocaleTimeString()}`;
+  } else {
+    lastUsedDisplay.textContent = "";
   }
 
-  // Suggest next drop
-  if (!data.lastUsed) {
-    nextDropEl.textContent = "Start by selecting a drop.";
-  } else if (data.lastUsed === "white") {
-    if (data.transparent.length < transparentLimit) {
-      nextDropEl.textContent = "Next: Transparent Drop 💧";
-      whiteBtn.disabled = true;
-      transparentBtn.disabled = false;
-    } else {
-      nextDropEl.textContent = "Only White Drop left 💧";
-      whiteBtn.disabled = false;
-      transparentBtn.disabled = true;
-    }
-  } else if (data.lastUsed === "transparent") {
-    if (data.white.length < whiteLimit) {
-      nextDropEl.textContent = "Next: White Drop 💧";
-      whiteBtn.disabled = false;
-      transparentBtn.disabled = true;
-    } else {
-      nextDropEl.textContent = "Only Transparent Drop left 💧";
-      whiteBtn.disabled = true;
-      transparentBtn.disabled = false;
-    }
+  // Alternating logic
+  if (!data.lastUsed || data.lastUsed === "transparent") {
+    nextDrop.textContent = "Next Drop: White";
+    whiteBtn.disabled = false;
+    transparentBtn.disabled = true;
+  } else {
+    nextDrop.textContent = "Next Drop: Transparent";
+    whiteBtn.disabled = true;
+    transparentBtn.disabled = false;
   }
 }
 
-// Handle drop usage
-function useDrop(type) {
-  const now = new Date().toLocaleTimeString();
-  if (type === "white" && data.white.length < whiteLimit) {
-    data.white.push(now);
+// Handle White Drop
+whiteBtn.addEventListener("click", () => {
+  if (data.white.length < 5) {
+    data.white.push(new Date().toLocaleTimeString());
     data.lastUsed = "white";
-    messageBox.textContent = `White Drop used at ${now}`;
-  } else if (type === "transparent" && data.transparent.length < transparentLimit) {
-    data.transparent.push(now);
-    data.lastUsed = "transparent";
-    messageBox.textContent = `Transparent Drop used at ${now}`;
+    saveData();
   }
+});
 
-  localStorage.setItem("eyeDropData", JSON.stringify(data));
+// Handle Transparent Drop
+transparentBtn.addEventListener("click", () => {
+  if (data.transparent.length < 4) {
+    data.transparent.push(new Date().toLocaleTimeString());
+    data.lastUsed = "transparent";
+    saveData();
+  }
+});
+
+// Save to localStorage
+function saveData() {
+  localStorage.setItem(today, JSON.stringify(data));
   updateUI();
 }
 
-// Event listeners
-whiteBtn.addEventListener("click", () => useDrop("white"));
-transparentBtn.addEventListener("click", () => useDrop("transparent"));
-
-// Time updater
-setInterval(() => {
-  const now = new Date();
-  timeDisplay.textContent = now.toLocaleString();
-}, 1000);
-
-// Initial UI update
-updateUI();
-
+// Refresh Button
 document.getElementById("refreshBtn").addEventListener("click", () => {
   const confirmReset = confirm("Do you want to refresh the drop count?");
   if (confirmReset) {
@@ -109,8 +77,15 @@ document.getElementById("refreshBtn").addEventListener("click", () => {
       transparent: [],
       lastUsed: null
     };
+    localStorage.setItem(today, JSON.stringify(data));
     updateUI();
-    db.collection("drops").doc(today).set(data);
-    alert("Drop count has been reset!");
   }
 });
+
+// View History link (optional for future page)
+document.getElementById("viewHistory").addEventListener("click", () => {
+  window.location.href = "history.html";
+});
+
+// Initialize UI
+updateUI();
