@@ -1,91 +1,117 @@
-// Initial Setup
-const today = new Date().toISOString().split("T")[0];
-const timeElement = document.getElementById("time");
+// Elements
+const whiteBtn = document.getElementById("whiteDropBtn");
+const transparentBtn = document.getElementById("transparentDropBtn");
 const whiteCount = document.getElementById("whiteCount");
 const transparentCount = document.getElementById("transparentCount");
 const nextDrop = document.getElementById("nextDrop");
-const whiteBtn = document.getElementById("whiteBtn");
-const transparentBtn = document.getElementById("transparentBtn");
-const lastUsedDisplay = document.getElementById("lastUsed");
+const messageBox = document.getElementById("messageBox");
+const currentDateTime = document.getElementById("currentDateTime");
 
+// Setup
+const today = new Date().toISOString().split("T")[0];
 let data = JSON.parse(localStorage.getItem(today)) || {
-  date: today,
   white: [],
   transparent: [],
-  lastUsed: null
+  lastUsed: null,
 };
 
 // Show current time
 setInterval(() => {
-  timeElement.textContent = new Date().toLocaleString();
+  const now = new Date();
+  currentDateTime.textContent = now.toLocaleString("te-IN", {
+    dateStyle: "full",
+    timeStyle: "medium",
+  });
 }, 1000);
+
+// Save to localStorage
+function save() {
+  localStorage.setItem(today, JSON.stringify(data));
+  localStorage.setItem("eyeDropData", JSON.stringify({
+    date: today,
+    white: data.white,
+    transparent: data.transparent,
+  }));
+}
 
 // Update UI
 function updateUI() {
-  whiteCount.textContent = `White Drop: ${data.white.length} / 5`;
-  transparentCount.textContent = `Transparent Drop: ${data.transparent.length} / 4`;
+  whiteCount.textContent = `${data.white.length} / 5`;
+  transparentCount.textContent = `${data.transparent.length} / 4`;
 
-  if (data.lastUsed) {
-    lastUsedDisplay.textContent = `${data.lastUsed} used at ${new Date().toLocaleTimeString()}`;
-  } else {
-    lastUsedDisplay.textContent = "";
+  const whiteDone = data.white.length >= 5;
+  const transparentDone = data.transparent.length >= 4;
+
+  if (whiteDone && transparentDone) {
+    nextDrop.textContent = "ఈరోజు అన్ని బొట్లు వాడడం పూర్తైంది!";
+    whiteBtn.disabled = true;
+    transparentBtn.disabled = true;
+    return;
   }
 
-  // Alternating logic
-  if (!data.lastUsed || data.lastUsed === "transparent") {
-    nextDrop.textContent = "Next Drop: White";
-    whiteBtn.disabled = false;
-    transparentBtn.disabled = true;
-  } else {
-    nextDrop.textContent = "Next Drop: Transparent";
-    whiteBtn.disabled = true;
-    transparentBtn.disabled = false;
+  whiteBtn.disabled = true;
+  transparentBtn.disabled = true;
+
+  if (!data.lastUsed) {
+    // First time usage - allow both
+    if (!whiteDone) whiteBtn.disabled = false;
+    if (!transparentDone) transparentBtn.disabled = false;
+    nextDrop.textContent = "తదుపరి: మొదటి బొట్టు వాడండి";
+    return;
+  }
+
+  if (data.lastUsed === "white") {
+    if (!transparentDone) {
+      nextDrop.textContent = "తదుపరి: పారదర్శక బొట్టు వాడాలి";
+      transparentBtn.disabled = false;
+    } else if (!whiteDone) {
+      nextDrop.textContent = "తదుపరి: తెలుపు బొట్టు వాడాలి";
+      whiteBtn.disabled = false;
+    }
+  } else if (data.lastUsed === "transparent") {
+    if (!whiteDone) {
+      nextDrop.textContent = "తదుపరి: తెలుపు బొట్టు వాడాలి";
+      whiteBtn.disabled = false;
+    } else if (!transparentDone) {
+      nextDrop.textContent = "తదుపరి: పారదర్శక బొట్టు వాడాలి";
+      transparentBtn.disabled = false;
+    }
   }
 }
 
-// Handle White Drop
+// Handlers
 whiteBtn.addEventListener("click", () => {
   if (data.white.length < 5) {
     data.white.push(new Date().toLocaleTimeString());
     data.lastUsed = "white";
-    saveData();
-  }
-});
-
-// Handle Transparent Drop
-transparentBtn.addEventListener("click", () => {
-  if (data.transparent.length < 4) {
-    data.transparent.push(new Date().toLocaleTimeString());
-    data.lastUsed = "transparent";
-    saveData();
-  }
-});
-
-// Save to localStorage
-function saveData() {
-  localStorage.setItem(today, JSON.stringify(data));
-  updateUI();
-}
-
-// Refresh Button
-document.getElementById("refreshBtn").addEventListener("click", () => {
-  const confirmReset = confirm("Do you want to refresh the drop count?");
-  if (confirmReset) {
-    data = {
-      date: today,
-      white: [],
-      transparent: [],
-      lastUsed: null
-    };
-    localStorage.setItem(today, JSON.stringify(data));
+    save();
     updateUI();
   }
 });
 
-// View History link (optional for future page)
-document.getElementById("viewHistory").addEventListener("click", () => {
-  window.location.href = "history.html";
+transparentBtn.addEventListener("click", () => {
+  if (data.transparent.length < 4) {
+    data.transparent.push(new Date().toLocaleTimeString());
+    data.lastUsed = "transparent";
+    save();
+    updateUI();
+  }
 });
 
-// Initialize UI
+// Refresh
+const refreshBtn = document.getElementById("refreshBtn");
+refreshBtn.addEventListener("click", () => {
+  const confirmReset = confirm("డ్రాప్ కౌంట్ రీసెట్ చేయాలా?");
+  if (confirmReset) {
+    data = {
+      white: [],
+      transparent: [],
+      lastUsed: null,
+    };
+    save();
+    updateUI();
+  }
+});
+
+// Init
 updateUI();

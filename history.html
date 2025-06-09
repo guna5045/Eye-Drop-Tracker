@@ -1,26 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="te">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Drop History</title>
+  <title>చరిత్ర</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h1>📜 Drop History</h1>
+    <h1>📜 చరిత్ర</h1>
 
     <div class="history-box">
-      <h3>Date: <span id="historyDate"></span></h3>
-      <p><strong>White Drop:</strong></p>
+      <h3>తేదీ: <span id="historyDate"></span></h3>
+
+      <p><strong>తెలుపు డ్రాప్స్:</strong></p>
       <ul id="whiteHistory"></ul>
 
-      <p><strong>Transparent Drop:</strong></p>
+      <p><strong>పారదర్శక డ్రాప్స్:</strong></p>
       <ul id="transparentHistory"></ul>
     </div>
 
     <div class="history-link">
-      <a href="index.html">⬅️ Back to Tracker</a>
+      <a href="index.html">⬅️ తిరిగి వెళ్ళు</a>
     </div>
   </div>
 
@@ -29,24 +30,25 @@
     const whiteHistory = document.getElementById("whiteHistory");
     const transparentHistory = document.getElementById("transparentHistory");
 
-    const data = JSON.parse(localStorage.getItem("eyeDropData"));
+    const today = new Date().toISOString().split("T")[0];
+    const data = JSON.parse(localStorage.getItem(today));
 
     if (data) {
       historyDate.textContent = data.date;
 
-      data.white.forEach(time => {
+      data.white.forEach((time, index) => {
         const li = document.createElement("li");
-        li.textContent = time;
+        li.textContent = `${index + 1} వసారి తెలుపు డ్రాప్ వేశారు (${time})`;
         whiteHistory.appendChild(li);
       });
 
-      data.transparent.forEach(time => {
+      data.transparent.forEach((time, index) => {
         const li = document.createElement("li");
-        li.textContent = time;
+        li.textContent = `${index + 1} వసారి పారదర్శక డ్రాప్ వేశారు (${time})`;
         transparentHistory.appendChild(li);
       });
     } else {
-      historyDate.textContent = "No data found";
+      historyDate.textContent = "డేటా లేదు";
     }
   </script>
 </body>

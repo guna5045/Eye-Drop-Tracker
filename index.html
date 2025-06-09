@@ -1,54 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="te">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Eye Drop Tracker</title>
+  <title>కంటిలో బొట్టు ట్రాకర్</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h1>👁️ Eye Drop Tracker</h1>
-    
+    <h1>👁️ కంటిలో బొట్టు ట్రాకర్</h1>
+
     <div class="time-box">
       <p id="currentDateTime"></p>
     </div>
 
     <div class="status">
-      <h3>Today’s Progress</h3>
-      <p>White Drop: <span id="whiteCount">0</span> / 5</p>
-      <p>Transparent Drop: <span id="transparentCount">0</span> / 4</p>
+      <h3>ఈరోజు ప్రగతి</h3>
+      <p>తెలుపు బొట్టు: <span id="whiteCount">0 / 5</span></p>
+      <p>పారదర్శక బొట్టు: <span id="transparentCount">0 / 4</span></p>
     </div>
 
     <div class="next-drop">
-      <h3>Next Drop:</h3>
-      <p id="nextDrop">Start by selecting a drop</p>
+      <h3>తర్వాతి బొట్టు:</h3>
+      <p id="nextDrop">దయచేసి బొట్టు వాడినట్టు నొక్కండి</p>
     </div>
 
     <div class="buttons">
-      <button id="whiteDropBtn"><b>💧 White Drop Used</b></button>
-      <button id="transparentDropBtn"><b>💧 Transparent Drop Used</b></button>
+      <button id="whiteDropBtn">💧 తెలుపు బొట్టు వేశారు</button>
+      <button id="transparentDropBtn">💧 పారదర్శక బొట్టు వేశారు</button>
     </div>
 
     <div class="message" id="messageBox"></div>
-    <div class="footer">
-  <button id="refreshBtn">🔄 Refresh Drop Count</button>
 
-
+    <button id="refreshBtn">🔄 బొట్టు లెక్కను రీసెట్ చేయండి</button>
 
     <div class="history-link">
-      <a href="history.html">📜 View History</a>
+      <a href="history.html">📜 చరిత్ర చూడండి</a>
+    </div>
+
+    <div class="footer">
+      <p>Created by <strong>Gunashekhar Ammajigari</strong></p>
+      <a href="https://www.linkedin.com/in/gunashekhar-ammajigari-097180306/" target="_blank">
+        <button class="linkedin-btn">🔗 Visit My LinkedIn</button>
+      </a>
     </div>
   </div>
 
-
-  
-<script src="script.js"></script>
-  <p>Created by <strong>Gunashekhar Ammajigari</strong></p>
-  <a href="https://www.linkedin.com/in/gunashekhar-ammajigari-097180306/" target="_blank">
-    <button class="linkedin-btn">🔗 Visit My LinkedIn</button>
-  </a>
-</div>
-
+  <script src="script.js"></script>
 </body>
 </html>
