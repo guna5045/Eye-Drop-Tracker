@@ -12,12 +12,8 @@
 
     <div class="history-box">
       <h3>తేదీ: <span id="historyDate"></span></h3>
-
       <p><strong>తెలుపు డ్రాప్స్:</strong></p>
       <ul id="whiteHistory"></ul>
-
-      <p><strong>పారదర్శక డ్రాప్స్:</strong></p>
-      <ul id="transparentHistory"></ul>
     </div>
 
     <div class="history-link">
@@ -28,24 +24,18 @@
   <script>
     const historyDate = document.getElementById("historyDate");
     const whiteHistory = document.getElementById("whiteHistory");
-    const transparentHistory = document.getElementById("transparentHistory");
 
     const today = new Date().toISOString().split("T")[0];
-    const data = JSON.parse(localStorage.getItem(today));
+    const allData = JSON.parse(localStorage.getItem("eyeDropData")) || {};
+    const data = allData[today];
 
-    if (data) {
-      historyDate.textContent = data.date;
+    if (data && data.white) {
+      historyDate.textContent = today;
 
       data.white.forEach((time, index) => {
         const li = document.createElement("li");
         li.textContent = `${index + 1} వసారి తెలుపు డ్రాప్ వేశారు (${time})`;
         whiteHistory.appendChild(li);
-      });
-
-      data.transparent.forEach((time, index) => {
-        const li = document.createElement("li");
-        li.textContent = `${index + 1} వసారి పారదర్శక డ్రాప్ వేశారు (${time})`;
-        transparentHistory.appendChild(li);
       });
     } else {
       historyDate.textContent = "డేటా లేదు";

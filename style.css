@@ -36,11 +36,11 @@ h1 {
   margin-bottom: 20px;
 }
 
-.status, .next-drop {
+.status {
   margin: 20px 0;
 }
 
-.status p, .next-drop p {
+.status p {
   font-size: 1.4rem;
 }
 
