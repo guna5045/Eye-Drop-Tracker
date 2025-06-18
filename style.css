@@ -6,7 +6,7 @@
 }
 
 body {
-  background-color: #fff2f2;
+  background: linear-gradient(135deg, #f6d8f5, #e2f0ff);
   color: #222;
   display: flex;
   justify-content: center;
@@ -14,11 +14,11 @@ body {
 }
 
 .container {
-  background-color: #ffe6e6;
+  background-color: #ffffff;
   padding: 30px;
   border-radius: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  max-width: 550px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  max-width: 600px;
   width: 100%;
   font-size: 1.4rem;
 }
@@ -27,7 +27,7 @@ h1 {
   text-align: center;
   color: #222;
   margin-bottom: 20px;
-  font-size: 2rem;
+  font-size: 2.2rem;
 }
 
 .time-box {
@@ -36,11 +36,11 @@ h1 {
   margin-bottom: 20px;
 }
 
-.status {
+.status, .next-drop {
   margin: 20px 0;
 }
 
-.status p {
+.status p, .next-drop p {
   font-size: 1.4rem;
 }
 
@@ -68,9 +68,11 @@ button:hover {
   background-color: #c0392b;
 }
 
-.history-link {
-  text-align: center;
-  margin-top: 20px;
+.btn-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
 }
 
 .footer {
