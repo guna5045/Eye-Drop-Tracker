@@ -1,61 +1,64 @@
 <!DOCTYPE html>
 <html lang="te">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>📜 బొట్టు చరిత్ర</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>📜 చరిత్ర</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h1>📜 ఈ రోజు బొట్టు చరిత్ర</h1>
-    <p id="currentDateTime" class="time-box"></p>
-    <ul id="historyList" class="status"></ul>
+    <h1>📜 చరిత్ర</h1>
 
-    <div class="history-link" style="margin-top: 20px;">
-      <a href="index.html">🏠 తిరిగి వెళ్ళండి</a>
+    <div class="history-box">
+      <h3>తేదీ: <span id="historyDate"></span></h3>
+
+      <p><strong>ఆకుపచ్చ బొట్టు:</strong></p>
+      <ul id="greenHistory"></ul>
+
+      <p><strong>పారదర్శక బొట్టు:</strong></p>
+      <ul id="transparentHistory"></ul>
+
+      <p><strong>తెలుపు బొట్టు:</strong></p>
+      <ul id="whiteHistory"></ul>
     </div>
 
-    <div class="footer">
-      <p>Created by <strong>Gunashekhar Ammajigari</strong></p>
-      <a href="https://www.linkedin.com/in/gunashekhar-ammajigari-097180306/" target="_blank">
-        <button class="linkedin-btn">🔗 Visit My LinkedIn</button>
-      </a>
+    <div class="history-link">
+      <a href="index.html">⬅️ తిరిగి వెళ్ళు</a>
     </div>
   </div>
 
   <script>
-    const currentDateTime = document.getElementById("currentDateTime");
-    const historyList = document.getElementById("historyList");
+    const greenHistory = document.getElementById("greenHistory");
+    const transparentHistory = document.getElementById("transparentHistory");
+    const whiteHistory = document.getElementById("whiteHistory");
+    const historyDate = document.getElementById("historyDate");
+
     const today = new Date().toISOString().split("T")[0];
-
-    // Show current date/time
-    setInterval(() => {
-      const now = new Date();
-      currentDateTime.textContent = now.toLocaleString("te-IN", {
-        dateStyle: "full",
-        timeStyle: "medium"
-      });
-    }, 1000);
-
-    const dropLabels = {
-      green: "పచ్చ బొట్టు",
-      transparent: "పారదర్శక బొట్టు",
-      white: "తెలుపు బొట్టు"
-    };
-
     const data = JSON.parse(localStorage.getItem(today));
 
     if (data) {
-      for (const key of ["green", "transparent", "white"]) {
-        if (data[key] && data[key].length > 0) {
-          const li = document.createElement("li");
-          li.innerHTML = `<strong>${dropLabels[key]}</strong>:<br>${data[key].join("<br>")}`;
-          historyList.appendChild(li);
-        }
-      }
+      historyDate.textContent = today;
+
+      data.green.forEach((t, i) => {
+        const li = document.createElement("li");
+        li.textContent = `${i + 1} వసారి ఆకుపచ్చ బొట్టు వేశారు (${t})`;
+        greenHistory.appendChild(li);
+      });
+
+      data.transparent.forEach((t, i) => {
+        const li = document.createElement("li");
+        li.textContent = `${i + 1} వసారి పారదర్శక బొట్టు వేశారు (${t})`;
+        transparentHistory.appendChild(li);
+      });
+
+      data.white.forEach((t, i) => {
+        const li = document.createElement("li");
+        li.textContent = `${i + 1} వసారి తెలుపు బొట్టు వేశారు (${t})`;
+        whiteHistory.appendChild(li);
+      });
     } else {
-      historyList.innerHTML = "<li>ఈ రోజు ఇంకా బొట్టు వేసే నమోదు లేదు.</li>";
+      historyDate.textContent = "డేటా లేదు";
     }
   </script>
 </body>

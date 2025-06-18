@@ -6,7 +6,7 @@
 }
 
 body {
-  background: linear-gradient(135deg, #f6d8f5, #e2f0ff);
+  background-color: #fff2f2;
   color: #222;
   display: flex;
   justify-content: center;
@@ -14,10 +14,10 @@ body {
 }
 
 .container {
-  background-color: #ffffff;
+  background-color: #ffe6e6;
   padding: 30px;
   border-radius: 20px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   max-width: 600px;
   width: 100%;
   font-size: 1.4rem;
@@ -27,52 +27,71 @@ h1 {
   text-align: center;
   color: #222;
   margin-bottom: 20px;
-  font-size: 2.2rem;
+  font-size: 2rem;
 }
 
 .time-box {
   text-align: center;
-  font-size: 1.3rem;
-  margin-bottom: 20px;
-}
-
-.status, .next-drop {
-  margin: 20px 0;
-}
-
-.status p, .next-drop p {
-  font-size: 1.4rem;
-}
-
-button {
-  padding: 15px 20px;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   margin-bottom: 15px;
+}
+
+.status p {
+  font-size: 1.3rem;
+  margin: 6px 0;
+}
+
+.buttons button {
+  padding: 15px;
+  font-size: 1.3rem;
+  margin: 10px 0;
+  width: 100%;
   border: none;
   border-radius: 10px;
-  background-color: #d42482;
-  color: white;
   cursor: pointer;
-  width: 100%;
+  background-color: #ccc;
+  color: white;
+  transition: 0.3s;
 }
 
-button:hover {
-  background-color: #b6006e;
+button.active {
+  background-color: #b1035a;
 }
 
-#refreshBtn {
+button:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.controls button,
+.controls .history-btn {
+  padding: 10px 18px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 8px;
   background-color: #e74c3c;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
 }
 
-#refreshBtn:hover {
+.controls .history-btn {
+  background-color: #2980b9;
+}
+
+.controls button:hover {
   background-color: #c0392b;
 }
 
-.btn-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  margin-top: 10px;
+.controls .history-btn:hover {
+  background-color: #21618c;
 }
 
 .footer {
@@ -88,6 +107,7 @@ button:hover {
   color: white;
   border: none;
   border-radius: 6px;
+  font-size: 1rem;
 }
 
 .linkedin-btn:hover {
